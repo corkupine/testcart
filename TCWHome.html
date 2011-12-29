@@ -21,6 +21,7 @@
 
     <!-- CSS
    ================================================== -->
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/ui-lightness/jquery-ui.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="stylesheets/base.css">
     <link rel="stylesheet" href="stylesheets/skeleton.css">
     <link rel="stylesheet" href="stylesheets/layout.css">
@@ -59,21 +60,25 @@
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <img src="images/Liono_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addLiono" value="Add To Cart">
+            <input type="text" id="spinner1" value="0"/>
+            <input type="button" id="addLiono" value="Add"/>
+            <input type="button" id="removeLiono" value="Remove"/>
         </div>
         <div class="one-third column">
             <h4>Tygra - Limited Edition</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <img src="images/Tygra_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addTygra" value="Add To Cart">
+            <input type="button" id="addTygra" value="Add To Cart"/>
+            <input type="button" id="removeTygra" value="Remove From Cart"/>
         </div>
         <div class="one-third column omega">
             <h4>Liono & Tygra Bundle</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <img src="images/Asst4_150.png"/>
             <p>$145.00</p>
-            <input type="button" id="addAsst4" value="Add To Cart">
+            <input type="button" id="addAsst4" value="Add To Cart"/>
+            <input type="button" id="removeAsst4" value="Remove From Cart"/>
         </div>
     </div>
     <div class="sixteen columns">
@@ -82,21 +87,24 @@
             <p>Includes characters + accessories</p>
             <img src="images/Asst1_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addAsst1" value="Add To Cart">
+            <input type="button" id="addAsst1" value="Add To Cart"/>
+            <input type="button" id="removeAsst1" value="Remove From Cart"/>
         </div>
         <div class="one-third column">
             <h4>Collectors Set 2</h4>
             <p>Includes characters + accessories</p>
             <img src="images/Asst2_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addAsst2" value="Add To Cart">
+            <input type="button" id="addAsst2" value="Add To Cart"/>
+            <input type="button" id="removeAsst2" value="Remove From Cart"/>
         </div>
         <div class="one-third column omega">
             <h4>Collectors Set 3</h4>
             <p>Includes characters + accessories</p>
             <img src="images/Asst3_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addAsst3" value="Add To Cart">
+            <input type="button" id="addAsst3" value="Add To Cart"/>
+            <input type="button" id="removeAsst3" value="Remove From Cart"/>
         </div>
     </div>
     <div class="sixteen columns"><hr/></div>
@@ -106,7 +114,14 @@
 <!-- JS
     ================================================== -->
 <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="scripts/ui.spinner.min.js"></script>
 <script src="scripts/tabs.js"></script>
+<script type="text/javascript">
+    jQuery().ready(function($) {
+        $('#spinner1').spinner({ min: 0, max: 99 });
+    });
+</script>
 
 <!-- End Document
 ================================================== -->
