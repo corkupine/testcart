@@ -22,6 +22,7 @@
     <!-- CSS
    ================================================== -->
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/ui-lightness/jquery-ui.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/ui.spinner.css">
     <link rel="stylesheet" href="stylesheets/base.css">
     <link rel="stylesheet" href="stylesheets/skeleton.css">
     <link rel="stylesheet" href="stylesheets/layout.css">
@@ -60,25 +61,39 @@
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <img src="images/Liono_150.png"/>
             <p>$75.00</p>
-            <input type="text" id="spinner1" value="0"/>
-            <input type="button" id="addLiono" value="Add"/>
-            <input type="button" id="removeLiono" value="Remove"/>
+            <div style="height:30px">
+                <input type="text" id="spinner1" value="0" style="width:35px"/>
+            </div>
+            <div style="margin:-32px 0 0 50px">
+                <input type="button"  id="addLiono" value="Add"/>
+                <input type="button" id="removeLiono" value="Remove"/>
+            </div>
         </div>
         <div class="one-third column">
             <h4>Tygra - Limited Edition</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <img src="images/Tygra_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addTygra" value="Add To Cart"/>
-            <input type="button" id="removeTygra" value="Remove From Cart"/>
+            <div style="height:30px">
+                <input type="text" id="spinner2" value="0" style="width:35px"/>
+            </div>
+            <div style="margin:-32px 0 0 50px">
+                <input type="button" id="addTygra" value="Add"/>
+                <input type="button" id="removeTygra" value="Remove"/>
+            </div>
         </div>
         <div class="one-third column omega">
             <h4>Liono & Tygra Bundle</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <img src="images/Asst4_150.png"/>
             <p>$145.00</p>
-            <input type="button" id="addAsst4" value="Add To Cart"/>
-            <input type="button" id="removeAsst4" value="Remove From Cart"/>
+            <div style="height:30px">
+                <input type="text" id="spinner3" value="0" style="width:35px"/>
+            </div>
+            <div style="margin:-32px 0 0 50px">
+                <input type="button" id="addAsst4" value="Add"/>
+                <input type="button" id="removeAsst4" value="Remove"/>
+            </div>
         </div>
     </div>
     <div class="sixteen columns">
@@ -87,24 +102,39 @@
             <p>Includes characters + accessories</p>
             <img src="images/Asst1_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addAsst1" value="Add To Cart"/>
-            <input type="button" id="removeAsst1" value="Remove From Cart"/>
+            <div style="height:30px">
+                <input type="text" id="spinner4" value="0" style="width:35px"/>
+            </div>
+            <div style="margin:-32px 0 0 50px">
+                <input type="button" id="addAsst1" value="Add"/>
+                <input type="button" id="removeAsst1" value="Remove"/>
+            </div>
         </div>
         <div class="one-third column">
             <h4>Collectors Set 2</h4>
             <p>Includes characters + accessories</p>
             <img src="images/Asst2_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addAsst2" value="Add To Cart"/>
-            <input type="button" id="removeAsst2" value="Remove From Cart"/>
+            <div style="height:30px">
+                <input type="text" id="spinner5" value="0" style="width:35px"/>
+            </div>
+            <div style="margin:-32px 0 0 50px">
+                <input type="button" id="addAsst2" value="Add"/>
+                <input type="button" id="removeAsst2" value="Remove"/>
+            </div>
         </div>
         <div class="one-third column omega">
             <h4>Collectors Set 3</h4>
             <p>Includes characters + accessories</p>
             <img src="images/Asst3_150.png"/>
             <p>$75.00</p>
-            <input type="button" id="addAsst3" value="Add To Cart"/>
-            <input type="button" id="removeAsst3" value="Remove From Cart"/>
+            <div style="height:30px">
+                <input type="text" id="spinner6" value="0" style="width:35px"/>
+            </div>
+            <div style="margin:-32px 0 0 50px">
+                <input type="button" id="addAsst3" value="Add"/>
+                <input type="button" id="removeAsst3" value="Remove"/>
+            </div>
         </div>
     </div>
     <div class="sixteen columns"><hr/></div>
@@ -117,9 +147,104 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script src="scripts/ui.spinner.min.js"></script>
 <script src="scripts/tabs.js"></script>
+<!--TODO: Move this into external file-->
+<!--TODO: Somehow iterate through setting up spinners (by class?)-->
 <script type="text/javascript">
+    var items = 0;
+    var cart = new Object;
+    cart.items = new Array();
     jQuery().ready(function($) {
         $('#spinner1').spinner({ min: 0, max: 99 });
+        $('#spinner2').spinner({ min: 0, max: 99 });
+        $('#spinner3').spinner({ min: 0, max: 99 });
+        $('#spinner4').spinner({ min: 0, max: 99 });
+        $('#spinner5').spinner({ min: 0, max: 99 });
+        $('#spinner6').spinner({ min: 0, max: 99 });
+
+        $('#addLiono').click(function(){
+            var quantity=$('#spinner1').val();
+            var itemcode='liono';
+            addtocart(quantity,itemcode);
+            return false;
+        });
+
+        $('#removeLiono').click(function(){
+            var quantity=$('#spinner1').val();
+            var itemcode='liono';
+            var numberincart = howmany(itemcode);
+            if (quantity >= numberincart)
+            {
+                removefromcart(quantity,itemcode);
+            }
+            else
+            {
+                warnnotenoughtoremove(quantity,numberincart,itemcode);
+            }
+            return false;
+        });
+
+        function addtocart(quantity,itemcode)
+        {
+            if (cart !== null && cart !== 'undefined')
+            {
+                var existingitem = itemincart(itemcode);
+                if  (!existingitem)
+                {
+                    cart.items.push({quantity: quantity, itemcode: itemcode});
+                }
+                else
+                {
+                    existingitem.quantity += quantity;
+                }
+            }
+            else
+            {
+                /*TODO: Do something!*/
+            }
+        }
+
+        function removefromcart(quantity,itemcode)
+        {
+            if (cart !== null && cart !== 'undefined')
+            {
+                var existingitem = itemincart(itemcode);
+                if  (!existingitem)
+                {
+                    alert("That shit (" + itemcode +  ") isn't even in your cart, mofo!");
+                }
+                else if (existingitem.quantity < quantity)
+                {
+                    alert("You don't have that many of the " + itemcode + " in your damn cart!" );
+                }
+                else if (existingitem.quantity === quantity)
+                {
+                    /*TODO: SOMETHING!*/
+                }
+                else
+                {
+                    existingitem.quantity -= quantity;
+                }
+            }
+            else
+            {
+                /*TODO: Do something!*/
+            }
+        }
+
+        function itemincart(itemcode)
+        {
+            for (i=0;i<cart.items.length;i++)
+            {
+                if (cart.items[i].itemcode === itemcode)
+                {
+                    return cart.items[i];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     });
 </script>
 

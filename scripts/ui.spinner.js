@@ -127,8 +127,8 @@ $.widget('ui.spinner', {
 				.after('<span class="ui-spinner ui-widget"></span>').next(),
 			btnContainer = self.btnContainer = $(
 				'<div class="ui-spinner-buttons">' + 
-					'<div class="ui-spinner-up ui-spinner-button ui-state-default ui-corner-tr"><span class="ui-icon '+options.upIconClass+'">&nbsp;</span></div>' + 
-					'<div class="ui-spinner-down ui-spinner-button ui-state-default ui-corner-br"><span class="ui-icon '+options.downIconClass+'">&nbsp;</span></div>' + 
+					'<div class="ui-spinner-up ui-spinner-button ui-state-default ui-corner-tr"><span class="ui-icon '+options.upIconClass+'">&nbsp;</span></div>' +
+					'<div class="ui-spinner-down ui-spinner-button ui-state-default ui-corner-br"><span class="ui-icon '+options.downIconClass+'">&nbsp;</span></div>' +
 				'</div>'),
 
 			// object shortcuts
