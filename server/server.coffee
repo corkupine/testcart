@@ -24,3 +24,6 @@ server = http.createServer (request, response) ->
       response.writeHead 404
       response.end()
 server.listen 80
+
+#TODO: Add some fake cart ID to headers to manage sessions as a group
+#TODO: Nowjs stuff

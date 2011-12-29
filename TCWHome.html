@@ -40,9 +40,6 @@
 
 <!-- Primary Page Layout
     ================================================== -->
-
-<!-- Delete everything in this .container and get started on your own site! -->
-
 <div class="container">
     <div class="sixteen columns" style="background-color: #000000; color: #FFFFFF;">
         <div class="fourteen columns alpha" style="padding-top: 20px">
@@ -51,7 +48,10 @@
             <h5 style="color: #FFFFFF; margin-left: 10px">Serving all your ThunderCats needs!</h5>
         </div>
         <div class="two columns omega">
-            <div class="cart"><img src="images\cart.png"/><p style="margin: 0px 0px 0px 0px; font-size: x-small;">My Cart</p><p id="itemQuantity" style="margin: 0px 0px 0px 0px; font-size: x-small;">0 Items</p></div>
+            <div class="cart"><img src="images\cart.png"/>
+                <p style="margin: 0px 0px 0px 0px; font-size: x-small;">My Cart</p>
+                <p id="itemQuantity" style="margin: 0px 0px 0px 0px; font-size: x-small;">0 Items</p>
+            </div>
         </div>
     </div>
     <div class="sixteen columns"><br/><!--TODO: Add some content in here--></div>
@@ -147,106 +147,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script src="scripts/ui.spinner.min.js"></script>
 <script src="scripts/tabs.js"></script>
-<!--TODO: Move this into external file-->
-<!--TODO: Somehow iterate through setting up spinners (by class?)-->
-<script type="text/javascript">
-    var items = 0;
-    var cart = new Object;
-    cart.items = new Array();
-    jQuery().ready(function($) {
-        $('#spinner1').spinner({ min: 0, max: 99 });
-        $('#spinner2').spinner({ min: 0, max: 99 });
-        $('#spinner3').spinner({ min: 0, max: 99 });
-        $('#spinner4').spinner({ min: 0, max: 99 });
-        $('#spinner5').spinner({ min: 0, max: 99 });
-        $('#spinner6').spinner({ min: 0, max: 99 });
-
-        $('#addLiono').click(function(){
-            var quantity=$('#spinner1').val();
-            var itemcode='liono';
-            addtocart(quantity,itemcode);
-            return false;
-        });
-
-        $('#removeLiono').click(function(){
-            var quantity=$('#spinner1').val();
-            var itemcode='liono';
-            var numberincart = howmany(itemcode);
-            if (quantity >= numberincart)
-            {
-                removefromcart(quantity,itemcode);
-            }
-            else
-            {
-                warnnotenoughtoremove(quantity,numberincart,itemcode);
-            }
-            return false;
-        });
-
-        function addtocart(quantity,itemcode)
-        {
-            if (cart !== null && cart !== 'undefined')
-            {
-                var existingitem = itemincart(itemcode);
-                if  (!existingitem)
-                {
-                    cart.items.push({quantity: quantity, itemcode: itemcode});
-                }
-                else
-                {
-                    existingitem.quantity += quantity;
-                }
-            }
-            else
-            {
-                /*TODO: Do something!*/
-            }
-        }
-
-        function removefromcart(quantity,itemcode)
-        {
-            if (cart !== null && cart !== 'undefined')
-            {
-                var existingitem = itemincart(itemcode);
-                if  (!existingitem)
-                {
-                    alert("That shit (" + itemcode +  ") isn't even in your cart, mofo!");
-                }
-                else if (existingitem.quantity < quantity)
-                {
-                    alert("You don't have that many of the " + itemcode + " in your damn cart!" );
-                }
-                else if (existingitem.quantity === quantity)
-                {
-                    /*TODO: SOMETHING!*/
-                }
-                else
-                {
-                    existingitem.quantity -= quantity;
-                }
-            }
-            else
-            {
-                /*TODO: Do something!*/
-            }
-        }
-
-        function itemincart(itemcode)
-        {
-            for (i=0;i<cart.items.length;i++)
-            {
-                if (cart.items[i].itemcode === itemcode)
-                {
-                    return cart.items[i];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-    });
-</script>
+<script src="scripts/home.js"></script>
 
 <!-- End Document
 ================================================== -->
