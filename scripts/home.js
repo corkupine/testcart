@@ -148,15 +148,15 @@
       if (cart != null) {
         existingitem = itemincart(item.itemcode);
         if (!existingitem) {
-          return cart.items.push({
+          cart.items.push({
             quantity: quantity,
             item: item
           });
         } else {
           existingitem.quantity += quantity;
-          adjusttotals(quantity, item.price);
-          return sendmessage(quantity + " of " + item.displayname + " added to your cart.", "info");
         }
+        adjusttotals(quantity, item.price);
+        return sendmessage(quantity + " of " + item.displayname + " added to your cart.", "info");
       } else {
         cart = {
           items: [],

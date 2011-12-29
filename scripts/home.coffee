@@ -2,6 +2,7 @@
 # TODO: Wire this shit up to nowjs to communicate between sessions
 # TODO: Update cart section of banner, build lil' mouseover thingie
 # TODO: Implement jGrowl in sendmessage
+# TODO: Use backbone.js to manage model state, sync cart area in banner, etc.
 
 jQuery().ready ($) ->
   $('#spinner1').spinner
@@ -109,8 +110,8 @@ addtocart = (quantity,item) ->
         cart.items.push {quantity: quantity, item:item}
       else
         existingitem.quantity += quantity
-        adjusttotals quantity,item.price
-        sendmessage quantity + " of " + item.displayname + " added to your cart.","info"
+      adjusttotals quantity,item.price
+      sendmessage quantity + " of " + item.displayname + " added to your cart.","info"
     else
       cart =
         items:[]

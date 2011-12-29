@@ -10,7 +10,7 @@
 
 $(document).ready(function() {
 
-	/* Tabs Activiation
+	/* Tabs Activation
 	================================================== */
 
 	var tabs = $('ul.tabs');
