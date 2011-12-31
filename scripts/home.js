@@ -190,7 +190,7 @@
       if (cart != null) {
         existingitem = itemincart(item.itemcode);
         if (!existingitem) {
-          return sendmessage("Attempted to remove " + quantity + item.displayname + "s. There are no " + item.displayname + "s in your cart.", "warning");
+          return sendmessage("There are no " + item.displayname + "s in your cart.", "warning");
         } else if (existingitem.quantity < quantity) {
           return sendmessage("You don't have that many of the " + item.displayname + " in your cart.", "warning");
         } else {

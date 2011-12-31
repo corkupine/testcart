@@ -1,3 +1,7 @@
+# TODO: Set up cart sync between sessions - use cart id to make sure it's the same cart,
+#       update local cart if you just opened window and cart in a different window already
+#       has items, etc.
+
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
@@ -24,7 +28,6 @@ server = http.createServer (request, response) ->
       response.writeHead 404
       response.end()
 server.listen 80
-
 
 nowjs = require 'now'
 everyone = nowjs.initialize server

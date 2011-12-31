@@ -1,7 +1,9 @@
 # TODO: Somehow iterate through setting up spinners (by class?)
-# TODO: Wire this shit up to nowjs to communicate between sessions
 # TODO: Build lil' mouseover thingie
 # TODO: Use backbone.js to manage model state, sync cart area in banner, etc.
+# TODO: Set up cart sync between sessions - use cart id to make sure it's the same cart,
+#       update local cart if you just opened window and cart in a different window already
+#       has items, etc. Maybe allow "claiming" a cart by URL param...
 
 jQuery().ready ($) ->
   $('#spinner1').spinner
