@@ -1,7 +1,6 @@
 # TODO: Somehow iterate through setting up spinners (by class?)
 # TODO: Wire this shit up to nowjs to communicate between sessions
-# TODO: Update cart section of banner, build lil' mouseover thingie
-# TODO: Implement jGrowl in sendmessage
+# TODO: Build lil' mouseover thingie
 # TODO: Use backbone.js to manage model state, sync cart area in banner, etc.
 
 jQuery().ready ($) ->
@@ -25,52 +24,56 @@ jQuery().ready ($) ->
     max: 99
   $('#addLiono').click () ->
     quantity=parseInt $('#spinner1').val()
-    addtocart quantity,liono
+    now.addtocarts quantity,liono
     return false
   $('#removeLiono').click () ->
     quantity=parseInt $('#spinner1').val()
-    removefromcart quantity,liono
+    now.removefromcarts quantity,liono
     return false
   $('#addTygra').click () ->
     quantity=parseInt $('#spinner2').val()
-    addtocart quantity,tygra
+    now.addtocarts quantity,tygra
     return false
   $('#removeTygra').click () ->
     quantity=parseInt $('#spinner2').val()
-    removefromcart quantity,tygra
+    now.removefromcarts quantity,tygra
     return false
   $('#addAsst4').click () ->
     quantity=parseInt $('#spinner3').val()
-    addtocart quantity,asst4
+    now.addtocarts quantity,asst4
     return false
   $('#removeAsst4').click () ->
     quantity=parseInt $('#spinner3').val()
-    removefromcart quantity,asst4
+    now.removefromcarts quantity,asst4
     return false
   $('#addAsst1').click () ->
     quantity=parseInt $('#spinner4').val()
-    addtocart quantity,asst1
+    now.addtocarts quantity,asst1
     return false
   $('#removeAsst1').click () ->
     quantity=parseInt $('#spinner4').val()
-    removefromcart quantity,asst1
+    now.removefromcarts quantity,asst1
     return false
   $('#addAsst2').click () ->
     quantity=parseInt $('#spinner5').val()
-    addtocart quantity,asst2
+    now.addtocarts quantity,asst2
     return false
   $('#removeAsst2').click () ->
     quantity=parseInt $('#spinner5').val()
-    removefromcart quantity,asst2
+    now.removefromcarts quantity,asst2
     return false
   $('#addAsst3').click () ->
     quantity=parseInt $('#spinner6').val()
-    addtocart quantity,asst3
+    now.addtocarts quantity,asst3
     return false
   $('#removeAsst3').click () ->
     quantity=parseInt $('#spinner6').val()
-    removefromcart quantity,asst3
+    now.removefromcarts quantity,asst3
     return false
+
+# In a real app, maybe we'd do something like this?
+# $.get 'services/productdata', (data) ->
+#   productdata = data
 
 liono =
   displayname:'Liono - Limited Edition'
@@ -101,8 +104,21 @@ cart =
   items:[]
   totalitems:0
   totalprice:0
+###
+cartid = getCookie 'fakeCartSession'
+now.claimCart cartid
 
-addtocart = (quantity,item) ->
+getCookie = (name) ->
+  nameEQ = name + "="
+  ca = document.cookie.split ';'
+  for i in [0...ca.length]
+    c = ca[i]
+    while c.charAt 0 is ' '
+      c = c.substring(1,c.length)
+    if c.indexOf nameEQ is 0 then return c.substring nameEQ.length,c.length
+  return null
+###
+now.addtocart = (quantity,item) ->
   if quantity > 0
     if cart?
       existingitem = itemincart item.itemcode
@@ -111,6 +127,7 @@ addtocart = (quantity,item) ->
       else
         existingitem.quantity += quantity
       adjusttotals quantity,item.price
+      updatebanner()
       sendmessage quantity + " of " + item.displayname + " added to your cart.","info"
     else
       cart =
@@ -119,7 +136,7 @@ addtocart = (quantity,item) ->
         totalprice:0
       sendmessage("Something happened to your cart. We\'re sorry, and we got a new one for you. Please try again.","error");
 
-removefromcart = (quantity,item) ->
+now.removefromcart = (quantity,item) ->
   if quantity > 0
     if cart?
       existingitem = itemincart item.itemcode
@@ -136,7 +153,8 @@ removefromcart = (quantity,item) ->
         else
           existingitem.quantity -= quantity
           sendmessage quantity + " of " + item.displayname + " removed from your cart.","info"
-        adjusttotals (-quantity),(-item.price)
+        adjusttotals (-quantity),item.price
+        updatebanner()
 
     else
       cart =
@@ -148,6 +166,13 @@ removefromcart = (quantity,item) ->
 adjusttotals = (quantity,price) ->
   cart.totalitems += quantity
   cart.totalprice += quantity * price
+
+updatebanner = () ->
+  $('#cartTotal').html formatCurrency(cart.totalprice)
+  $('#itemQuantity').html cart.totalitems + " Items"
+
+formatCurrency = (number) ->
+  return "$" + parseFloat number.toFixed 2
 
 itemincart = (itemcode) ->
   index = itemindex itemcode
