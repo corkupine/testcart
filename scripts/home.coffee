@@ -106,20 +106,8 @@ cart =
   items:[]
   totalitems:0
   totalprice:0
-###
-cartid = getCookie 'fakeCartSession'
-now.claimCart cartid
 
-getCookie = (name) ->
-  nameEQ = name + "="
-  ca = document.cookie.split ';'
-  for i in [0...ca.length]
-    c = ca[i]
-    while c.charAt 0 is ' '
-      c = c.substring(1,c.length)
-    if c.indexOf nameEQ is 0 then return c.substring nameEQ.length,c.length
-  return null
-###
+
 now.addtocart = (quantity,item) ->
   if quantity > 0
     if cart?
@@ -143,9 +131,9 @@ now.removefromcart = (quantity,item) ->
     if cart?
       existingitem = itemincart item.itemcode
       if  !existingitem
-        sendmessage "There are no " + item.displayname +  "s in your cart.", "warning"
+        sendmessage "Attempted to remove " + quantity + " of " + item.displayname + " from your cart. There are no " + item.displayname +  "s in your cart.", "warning"
       else if existingitem.quantity < quantity
-        sendmessage "You don't have that many of the " + item.displayname + " in your cart.", "warning"
+        sendmessage "Attempted to remove " + quantity + " of " + item.displayname + " from your cart. You don't have that many of the " + item.displayname + " in your cart.", "warning"
       else
         if existingitem.quantity is quantity
           index = itemindex item.itemcode
@@ -193,3 +181,15 @@ sendmessage = (message, style) ->
     $.jnotify message
   else
     $.jnotify message,style
+
+getcookie = (name) ->
+  namestr = name + "="
+  cookie_array = document.cookie.split(';')
+  for cookie in cookie_array
+    cookie = cookie.substring(1, cookie.length) while (cookie.charAt(0) == ' ')
+    return cookie.substring(namestr.length, cookie.length) if cookie.indexOf(namestr) == 0
+  return null
+
+cartid = getcookie 'cartid'
+now.ready () ->
+  now.claimcart cartid

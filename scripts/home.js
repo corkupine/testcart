@@ -1,5 +1,5 @@
 (function() {
-  var adjusttotals, asst1, asst2, asst3, asst4, cart, formatCurrency, itemincart, itemindex, liono, sendmessage, tygra, updatebanner;
+  var adjusttotals, asst1, asst2, asst3, asst4, cart, cartid, formatCurrency, getcookie, itemincart, itemindex, liono, sendmessage, tygra, updatebanner;
 
   jQuery().ready(function($) {
     $('#spinner1').spinner({
@@ -142,21 +142,6 @@
     totalprice: 0
   };
 
-  /*
-  cartid = getCookie 'fakeCartSession'
-  now.claimCart cartid
-  
-  getCookie = (name) ->
-    nameEQ = name + "="
-    ca = document.cookie.split ';'
-    for i in [0...ca.length]
-      c = ca[i]
-      while c.charAt 0 is ' '
-        c = c.substring(1,c.length)
-      if c.indexOf nameEQ is 0 then return c.substring nameEQ.length,c.length
-    return null
-  */
-
   now.addtocart = function(quantity, item) {
     var existingitem;
     if (quantity > 0) {
@@ -190,9 +175,9 @@
       if (cart != null) {
         existingitem = itemincart(item.itemcode);
         if (!existingitem) {
-          return sendmessage("There are no " + item.displayname + "s in your cart.", "warning");
+          return sendmessage("Attempted to remove " + quantity + " of " + item.displayname + " from your cart. There are no " + item.displayname + "s in your cart.", "warning");
         } else if (existingitem.quantity < quantity) {
-          return sendmessage("You don't have that many of the " + item.displayname + " in your cart.", "warning");
+          return sendmessage("Attempted to remove " + quantity + " of " + item.displayname + " from your cart. You don't have that many of the " + item.displayname + " in your cart.", "warning");
         } else {
           if (existingitem.quantity === quantity) {
             index = itemindex(item.itemcode);
@@ -257,5 +242,27 @@
       return $.jnotify(message, style);
     }
   };
+
+  getcookie = function(name) {
+    var cookie, cookie_array, namestr, _i, _len;
+    namestr = name + "=";
+    cookie_array = document.cookie.split(';');
+    for (_i = 0, _len = cookie_array.length; _i < _len; _i++) {
+      cookie = cookie_array[_i];
+      while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1, cookie.length);
+      }
+      if (cookie.indexOf(namestr) === 0) {
+        return cookie.substring(namestr.length, cookie.length);
+      }
+    }
+    return null;
+  };
+
+  cartid = getcookie('cartid');
+
+  now.ready(function() {
+    return now.claimcart(cartid);
+  });
 
 }).call(this);
