@@ -28,7 +28,7 @@
 
 /* #Super-Lightweight "Lightbox"
 ================================================== */
-.black_overlay{
+.faded{
     display: none;
     position: fixed;
     top: 0;
@@ -41,7 +41,7 @@
     opacity:.80;
     filter: alpha(opacity=80);
 }
-.white_content {
+.gallerycontent {
     display: none;
     position: fixed;
     top: 100px;

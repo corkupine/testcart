@@ -53,6 +53,7 @@ jQuery().ready ($) ->
     quantity=parseInt $('#spinner6').val()
     removefromcart quantity,asst3
     return false
+
   $('.cart').hover(
     -> $('#cartoverlay').fadeIn(100),
     -> $('#cartoverlay').fadeOut(100)
