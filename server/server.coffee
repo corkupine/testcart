@@ -1,17 +1,10 @@
-# TODO: Set up cart sync between sessions - use cart id to make sure it's the same cart,
-#       update local cart if you just opened window and cart in a different window already
-#       has items, etc.
-
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
 
-
 server = http.createServer (request, response) ->
-  console.log '[server.coffee] request starting...'
-  console.log request.headers.cookie
+  console.log 'Request starting: ' + request.headers.cookie
   filePath = '.' + request.url.split("?")[0]
-  console.log filePath
   cartid = getcartid request
   if filePath is './' then filePath = './TCWHome.html'
   extension = path.extname filePath
@@ -21,7 +14,6 @@ server = http.createServer (request, response) ->
     when '.css' then contentType = 'text/css'
   path.exists filePath, (exists) ->
     if exists
-      console.log 'Path exists'
       fs.readFile filePath, (error, content) ->
         if error
           response.writeHead 500
@@ -32,7 +24,6 @@ server = http.createServer (request, response) ->
           else {'Content-Type': contentType,'Set-Cookie': 'cartid=' + cartid}
           response.end content, 'utf-8'
     else
-      console.log 'Path does not exist'
       response.writeHead 404
       response.end()
 server.listen 80
@@ -44,23 +35,72 @@ nowjs.on 'connect', ->
   this.now.cartsession = "nosession"
   nowjs.getGroup(this.now.cartsession).addUser(this.user.clientId)
 
-everyone.now.claimcart = (newCart) ->
+everyone.now.claimcart = (cartid) ->
   nowjs.getGroup(this.now.cartsession).removeUser(this.user.clientId)
-  nowjs.getGroup(newCart).addUser(this.user.clientId)
-  this.now.cartsession = newCart
-#  nowjs.getGroup(this.now.cartsession).now.claimcart(quantity, item)
+  nowjs.getGroup(cartid).addUser(this.user.clientId)
+  this.now.cartsession = cartid
+  if not nowjs.getGroup(this.now.cartsession).now.cart?
+    nowjs.getGroup(this.now.cartsession).now.cart = createCart(cartid)
+  this.now.updatecart()
 
-everyone.now.addtocarts = (quantity,item) ->
+everyone.now.updatecarts = () ->
   if this.now.cartsession isnt "nosession"
-    nowjs.getGroup(this.now.cartsession).now.addtocart(quantity, item)
+    nowjs.getGroup(this.now.cartsession).now.updatecart()
 
-everyone.now.removefromcarts = (quantity,item) ->
-  if this.now.cartsession isnt "nosession"
-    nowjs.getGroup(this.now.cartsession).now.removefromcart(quantity, item)
+createCart = (cartid) ->
+  _cart =
+  items: []
+  totalprice: 0
+  totalitems: 0
+  cartid: cartid
+  api = {}
+  api.add = (quantity,item) ->
+    existingitem = itemincart item.itemcode,_cart
+    if  !existingitem
+      _cart.items.push {quantity: quantity, item:item}
+    else
+      existingitem.quantity += quantity
+    _cart.totalitems += quantity
+    _cart.totalprice += quantity * item.price
+    sendmessage _cart.cartid,quantity + " of " + item.displayname + " added to your cart.","info"
+  api.remove = (quantity,item) ->
+    existingitem = itemincart item.itemcode,_cart
+    if  !existingitem
+      sendmessage _cart.cartid,"Attempted to remove " + quantity + " of " + item.displayname + " from your cart. There are no " + item.displayname +  "s in your cart.", "warning"
+    else if existingitem.quantity < quantity
+      sendmessage _cart.cartid,"Attempted to remove " + quantity + " of " + item.displayname + " from your cart. You don't have that many of the " + item.displayname + " in your cart.", "warning"
+    else
+      if existingitem.quantity is quantity
+        index = itemindex item.itemcode,_cart
+        if index >= 0
+          _cart.items.splice index,1
+          sendmessage _cart.cartid,"We've removed all remaining " + item.displayname + "s from your cart.","info"
+      else
+         existingitem.quantity -= quantity
+         sendmessage _cart.cartid,quantity + " of " + item.displayname + " removed from your cart.","info"
+      _cart.totalitems += quantity
+      _cart.totalprice += -quantity * item.price
+  api.get = (callback) ->
+    callback(_cart)
+  return api
+
+itemincart = (itemcode,cart) ->
+  index = itemindex itemcode,cart
+  if index is -1
+    return null
+  else
+    return cart.items[index]
+
+itemindex = (itemcode,cart) ->
+  for i in [0...cart.items.length]
+    if cart.items[i].item.itemcode is itemcode then return i
+  return -1
+
+sendmessage = (cartid,message,style) ->
+  nowjs.getGroup(cartid).now.presentmessage(message,style)
 
 iscookieset = (cookies,cartid) ->
-  if cookies?
-    cookiecartid = getcookie 'cartid',cookies
+  if cookies? then cookiecartid = getcookie 'cartid',cookies
   if cookiecartid is cartid then return true
   else return false
 

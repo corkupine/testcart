@@ -1,5 +1,5 @@
 (function() {
-  var everyone, fs, getParameterByName, getcartid, getcookie, getguid, http, iscookieset, nowjs, path, server;
+  var createCart, everyone, fs, getParameterByName, getcartid, getcookie, getguid, http, iscookieset, itemincart, itemindex, nowjs, path, sendmessage, server;
 
   http = require('http');
 
@@ -9,10 +9,8 @@
 
   server = http.createServer(function(request, response) {
     var cartid, contentType, extension, filePath;
-    console.log('[server.coffee] request starting...');
-    console.log(request.headers.cookie);
+    console.log('Request starting: ' + request.headers.cookie);
     filePath = '.' + request.url.split("?")[0];
-    console.log(filePath);
     cartid = getcartid(request);
     if (filePath === './') filePath = './TCWHome.html';
     extension = path.extname(filePath);
@@ -26,7 +24,6 @@
     }
     return path.exists(filePath, function(exists) {
       if (exists) {
-        console.log('Path exists');
         return fs.readFile(filePath, function(error, content) {
           if (error) {
             response.writeHead(500);
@@ -42,7 +39,6 @@
           }
         });
       } else {
-        console.log('Path does not exist');
         response.writeHead(404);
         return response.end();
       }
@@ -60,22 +56,94 @@
     return nowjs.getGroup(this.now.cartsession).addUser(this.user.clientId);
   });
 
-  everyone.now.claimcart = function(newCart) {
+  everyone.now.claimcart = function(cartid) {
     nowjs.getGroup(this.now.cartsession).removeUser(this.user.clientId);
-    nowjs.getGroup(newCart).addUser(this.user.clientId);
-    return this.now.cartsession = newCart;
+    nowjs.getGroup(cartid).addUser(this.user.clientId);
+    this.now.cartsession = cartid;
+    if (!(nowjs.getGroup(this.now.cartsession).now.cart != null)) {
+      nowjs.getGroup(this.now.cartsession).now.cart = createCart(cartid);
+    }
+    return this.now.updatecart();
   };
 
-  everyone.now.addtocarts = function(quantity, item) {
+  everyone.now.updatecarts = function() {
     if (this.now.cartsession !== "nosession") {
-      return nowjs.getGroup(this.now.cartsession).now.addtocart(quantity, item);
+      return nowjs.getGroup(this.now.cartsession).now.updatecart();
     }
   };
 
-  everyone.now.removefromcarts = function(quantity, item) {
-    if (this.now.cartsession !== "nosession") {
-      return nowjs.getGroup(this.now.cartsession).now.removefromcart(quantity, item);
+  createCart = function(cartid) {
+    var api, _cart;
+    _cart = {
+      items: [],
+      totalprice: 0,
+      totalitems: 0,
+      cartid: cartid
+    };
+    api = {};
+    api.add = function(quantity, item) {
+      var existingitem;
+      existingitem = itemincart(item.itemcode, _cart);
+      if (!existingitem) {
+        _cart.items.push({
+          quantity: quantity,
+          item: item
+        });
+      } else {
+        existingitem.quantity += quantity;
+      }
+      _cart.totalitems += quantity;
+      _cart.totalprice += quantity * item.price;
+      return sendmessage(_cart.cartid, quantity + " of " + item.displayname + " added to your cart.", "info");
+    };
+    api.remove = function(quantity, item) {
+      var existingitem, index;
+      existingitem = itemincart(item.itemcode, _cart);
+      if (!existingitem) {
+        return sendmessage(_cart.cartid, "Attempted to remove " + quantity + " of " + item.displayname + " from your cart. There are no " + item.displayname + "s in your cart.", "warning");
+      } else if (existingitem.quantity < quantity) {
+        return sendmessage(_cart.cartid, "Attempted to remove " + quantity + " of " + item.displayname + " from your cart. You don't have that many of the " + item.displayname + " in your cart.", "warning");
+      } else {
+        if (existingitem.quantity === quantity) {
+          index = itemindex(item.itemcode, _cart);
+          if (index >= 0) {
+            _cart.items.splice(index, 1);
+            sendmessage(_cart.cartid, "We've removed all remaining " + item.displayname + "s from your cart.", "info");
+          }
+        } else {
+          existingitem.quantity -= quantity;
+          sendmessage(_cart.cartid, quantity + " of " + item.displayname + " removed from your cart.", "info");
+        }
+        _cart.totalitems += quantity;
+        return _cart.totalprice += -quantity * item.price;
+      }
+    };
+    api.get = function(callback) {
+      return callback(_cart);
+    };
+    return api;
+  };
+
+  itemincart = function(itemcode, cart) {
+    var index;
+    index = itemindex(itemcode, cart);
+    if (index === -1) {
+      return null;
+    } else {
+      return cart.items[index];
     }
+  };
+
+  itemindex = function(itemcode, cart) {
+    var i, _ref;
+    for (i = 0, _ref = cart.items.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
+      if (cart.items[i].item.itemcode === itemcode) return i;
+    }
+    return -1;
+  };
+
+  sendmessage = function(cartid, message, style) {
+    return nowjs.getGroup(cartid).now.presentmessage(message, style);
   };
 
   iscookieset = function(cookies, cartid) {

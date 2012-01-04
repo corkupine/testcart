@@ -12,7 +12,7 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"/>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"/>
     <![endif]-->
 
     <!-- Mobile Specific Metas
@@ -39,10 +39,18 @@
 </head>
 <body>
 
+<!-- Occasionally Visible Elements
+    ================================================== -->
+<!--TODO: Make all the lightbox-esque actions fade in/out-->
+<!--TODO: Move all styling out-->
+<!--TODO: Move all javascript out-->
+<div id="fade" class="black_overlay"></div>
+<div id="cartoverlay" style="position:fixed;top:0;right:0;z-index:1003;border:10px solid red;background-color: white;display:none;">Roll-your-own shopping cart<br/> hover overlay in progress...</div>
+
 <!-- Primary Page Layout
     ================================================== -->
 <div class="container">
-    <div class="sixteen columns" style="background-color: #000000; color: #FFFFFF;">
+    <div class="sixteen columns banner">
         <div class="fourteen columns alpha" style="padding-top: 20px">
             <img src="images/tcLogo.png" style="float:left;"/>
             <h1 style="color: #FFFFFF;margin-top: 10px">ThunderCats Warehouse</h1>
@@ -51,22 +59,22 @@
         <div class="two columns omega">
             <div class="cart">
                 <img src="images/cart.png"/>
-                <p style="margin: 0px 0px 0px 0px; font-size: x-small;">My Cart</p>
-                <p id="itemQuantity" style="margin: 0px 0px 0px 0px; font-size: x-small;float:left">0 Items</p>
-                <p id="cartTotal" style="margin: 0px 5px 0px 0px; font-size: x-small;float:right">$0</p>
+                <p style="margin: 0 0 0 0; font-size: x-small;">My Cart</p>
+                <p id="itemQuantity" style="margin: 0 0 0 0; font-size: x-small;float:left">0 Items</p>
+                <p id="cartTotal" style="margin: 0 5px 0 0; font-size: x-small;float:right">$0</p>
             </div>
         </div>
     </div>
-    <div class="sixteen columns"><br/><!--TODO: Add some content in here--></div>
-    <!--TODO: Add some nice gallery-style zoom-ins for pictures, maybe lightbox-->
+    <div class="sixteen columns"><br/></div>
     <div class="sixteen columns">
         <div class="one-third column alpha">
             <h4>Liono - Limited Edition</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
-            <img src="images/Liono_150.png"/>
+            <div id="liono500" class="white_content"><a href = "javascript:void(0)" onclick = "$('#liono500').fadeOut(200);$('#fade').fadeOut(200)"><img src="images/Liono_500.png"></a></div>
+            <a href="javascript:void(0)" onclick="$('#liono500').fadeIn(200);$('#fade').fadeIn(200)"><img src="images/Liono_150.png"/></a>
             <p>$75.00</p>
             <div style="height:30px">
-                <input type="text" id="spinner1" value="0" style="width:35px"/>
+                <input type="text" id="spinner1" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
             <div style="margin:-32px 0 0 50px">
                 <input type="button"  id="addLiono" value="Add"/>
@@ -76,10 +84,11 @@
         <div class="one-third column">
             <h4>Tygra - Limited Edition</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
-            <img src="images/Tygra_150.png"/>
+            <div id="tygra500" class="white_content"><a href = "javascript:void(0)" onclick = "document.getElementById('tygra500').style.display='none';document.getElementById('fade').style.display='none'"><img src="images/Tygra_500.png"></a></div>
+            <a href="javascript:void(0)" onclick="document.getElementById('tygra500').style.display='block';document.getElementById('fade').style.display='block'"><img src="images/Tygra_150.png"/></a>
             <p>$75.00</p>
             <div style="height:30px">
-                <input type="text" id="spinner2" value="0" style="width:35px"/>
+                <input type="text" id="spinner2" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
             <div style="margin:-32px 0 0 50px">
                 <input type="button" id="addTygra" value="Add"/>
@@ -89,10 +98,11 @@
         <div class="one-third column omega">
             <h4>Liono & Tygra Bundle</h4>
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
-            <img src="images/Asst4_150.png"/>
+            <div id="asst4_500" class="white_content"><a href = "javascript:void(0)" onclick = "document.getElementById('asst4_500').style.display='none';document.getElementById('fade').style.display='none'"><img src="images/Asst4_500.png"></a></div>
+            <a href="javascript:void(0)" onclick="document.getElementById('asst4_500').style.display='block';document.getElementById('fade').style.display='block'"><img src="images/Asst4_150.png"/></a>
             <p>$145.00</p>
             <div style="height:30px">
-                <input type="text" id="spinner3" value="0" style="width:35px"/>
+                <input type="text" id="spinner3" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
             <div style="margin:-32px 0 0 50px">
                 <input type="button" id="addAsst4" value="Add"/>
@@ -104,10 +114,11 @@
         <div class="one-third column alpha">
             <h4>Collectors Set 1</h4>
             <p>Includes characters + accessories</p>
-            <img src="images/Asst1_150.png"/>
+            <div id="asst1_500" class="white_content"><a href = "javascript:void(0)" onclick = "document.getElementById('asst1_500').style.display='none';document.getElementById('fade').style.display='none'"><img src="images/Asst1_500.png"></a></div>
+            <a href="javascript:void(0)" onclick="document.getElementById('asst1_500').style.display='block';document.getElementById('fade').style.display='block'"><img src="images/Asst1_150.png"/></a>
             <p>$75.00</p>
             <div style="height:30px">
-                <input type="text" id="spinner4" value="0" style="width:35px"/>
+                <input type="text" id="spinner4" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
             <div style="margin:-32px 0 0 50px">
                 <input type="button" id="addAsst1" value="Add"/>
@@ -117,10 +128,11 @@
         <div class="one-third column">
             <h4>Collectors Set 2</h4>
             <p>Includes characters + accessories</p>
-            <img src="images/Asst2_150.png"/>
+            <div id="asst2_500" class="white_content"><a href = "javascript:void(0)" onclick = "document.getElementById('asst2_500').style.display='none';document.getElementById('fade').style.display='none'"><img src="images/Asst2_500.png"></a></div>
+            <a href="javascript:void(0)" onclick="document.getElementById('asst2_500').style.display='block';document.getElementById('fade').style.display='block'"><img src="images/Asst2_150.png"/></a>
             <p>$75.00</p>
             <div style="height:30px">
-                <input type="text" id="spinner5" value="0" style="width:35px"/>
+                <input type="text" id="spinner5" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
             <div style="margin:-32px 0 0 50px">
                 <input type="button" id="addAsst2" value="Add"/>
@@ -130,10 +142,11 @@
         <div class="one-third column omega">
             <h4>Collectors Set 3</h4>
             <p>Includes characters + accessories</p>
-            <img src="images/Asst3_150.png"/>
+            <div id="asst3_500" class="white_content"><a href = "javascript:void(0)" onclick = "document.getElementById('asst3_500').style.display='none';document.getElementById('fade').style.display='none'"><img src="images/Asst3_500.png"></a></div>
+            <a href="javascript:void(0)" onclick="document.getElementById('asst3_500').style.display='block';document.getElementById('fade').style.display='block'"><img src="images/Asst3_150.png"/></a>
             <p>$75.00</p>
             <div style="height:30px">
-                <input type="text" id="spinner6" value="0" style="width:35px"/>
+                <input type="text" id="spinner6" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
             <div style="margin:-32px 0 0 50px">
                 <input type="button" id="addAsst3" value="Add"/>
@@ -142,7 +155,7 @@
         </div>
     </div>
     <div class="sixteen columns"><hr/></div>
-    <div class="sixteen columns"><!--TODO: Add content--></div>
+    <div class="sixteen columns">Copyright © 2012 Snarf Global Industries</div>
 </div><!-- container -->
 
 <!-- JS
@@ -154,7 +167,6 @@
 <script src="scripts/ui.spinner.min.js"></script>
 <script src="scripts/tabs.js"></script>
 <script src="scripts/home.js"></script>
-
 
 <!-- End Document
 ================================================== -->
