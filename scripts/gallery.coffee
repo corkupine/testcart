@@ -9,8 +9,8 @@ gallery = (element) ->
   gallerydiv.id = 'gallery'
   gallerydiv.className = 'gallerycontent'
   gallerydiv.onclick = () ->
-    $('#fade').fadeOut(galleryfadespeed).remove
-    $('#gallery').fadeOut(galleryfadespeed).remove
+    $('#fade').fadeOut(galleryfadespeed).remove()
+    $('#gallery').fadeOut(galleryfadespeed).remove()
   fadediv = document.createElement 'div'
   fadediv.id = 'fade'
   fadediv.className = 'faded'

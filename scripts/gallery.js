@@ -16,8 +16,8 @@
     gallerydiv.id = 'gallery';
     gallerydiv.className = 'gallerycontent';
     gallerydiv.onclick = function() {
-      $('#fade').fadeOut(galleryfadespeed).remove;
-      return $('#gallery').fadeOut(galleryfadespeed).remove;
+      $('#fade').fadeOut(galleryfadespeed).remove();
+      return $('#gallery').fadeOut(galleryfadespeed).remove();
     };
     fadediv = document.createElement('div');
     fadediv.id = 'fade';

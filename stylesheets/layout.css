@@ -47,12 +47,29 @@
     top: 100px;
     left: 100px;
     padding: 16px;
-    border: 16px solid red;
+    border: 8px solid #dbdbdb;
     background-color: white;
     z-index:1002;
     overflow: auto;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
 }
-
+#cartoverlay {
+    position: fixed;
+    top: 100px;
+    right: 100px;
+    z-index: 1000;
+    border: 2px solid #dbdbdb;
+    background-color: white;
+    display: none;
+    padding: 5px;
+    font-size:small;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#cartoverlay .row hr {
+    margin-bottom: 0px;
+}
 /* #Page Styles
 ================================================== */
 
