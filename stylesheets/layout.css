@@ -68,6 +68,54 @@
     border-radius: 5px;
 }
 #cartoverlay .row hr {
+     margin-bottom: 0px;
+ }
+
+#cartoverlay h4 {
+    float:left;
+    margin-left:10px;
+}
+
+#cartoverlay .closeimg
+{
+    float:right;
+}
+
+#cartoverlay .product
+{
+    padding:10px;
+    margin-bottom:0px;
+}
+
+#cartoverlay .odd
+{
+    background-color:#dbdbdb;
+}
+
+#cartoverlay .description, #totalitems
+{
+    float:left;
+}
+#cartoverlay .carticon
+{
+    height:30px;
+    width:30px;
+}
+#cartoverlay .rowimage
+{
+    vertical-align:middle;
+}
+#cartoverlay .delete, #totalprice
+{
+    float:right;
+}
+#cartoverlay .row
+{
+    margin-bottom:0;
+}
+#cartoverlay #linkhint
+{
+    font-size: x-small;
     margin-bottom: 0px;
 }
 /* #Page Styles

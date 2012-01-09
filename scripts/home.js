@@ -1,5 +1,5 @@
 (function() {
-  var addtocart, asst1, asst2, asst3, asst4, cartid, formatCurrency, getcookie, liono, removefromcart, tygra;
+  var addtocart, asst1, asst2, asst3, asst4, cartid, getcookie, liono, removefromcart, tygra;
 
   jQuery().ready(function($) {
     $('.TCWSpinner').spinner({
@@ -72,40 +72,11 @@
       addtocart(quantity, asst3);
       return false;
     });
-    $('#removeAsst3').click(function() {
+    return $('#removeAsst3').click(function() {
       var quantity;
       quantity = parseInt($('#spinner6').val());
       removefromcart(quantity, asst3);
       return false;
-    });
-    return $('.cart').hover(function() {
-      if (!$('#cartoverlay').is(":visible")) {
-        return now.cart.get(function(cart) {
-          var cartoverlaydiv, deletediv, descriptiondiv, item, productdiv, _i, _len, _ref;
-          cartoverlaydiv = document.createElement('div');
-          cartoverlaydiv.id = 'cartoverlay';
-          $(cartoverlaydiv).append('<div class="row"><h5 style="float:left;margin-left:10px">My Cart</h5><img src="images/close_20.png" style="float:right" onclick="$(\'#cartoverlay\').fadeOut(100).remove()"/></div>');
-          _ref = cart.items;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            item = _ref[_i];
-            productdiv = document.createElement('div');
-            $(productdiv).addClass('row');
-            descriptiondiv = document.createElement('div');
-            $(descriptiondiv).css('float', 'left');
-            $(descriptiondiv).append('<img src="images/' + item.item.thumbnail + '" height="30px" width="30px"/>  ' + item.item.displayname + ' :  Qty. ' + item.quantity + ' @ ' + item.item.price);
-            deletediv = document.createElement('div');
-            $(deletediv).css('float', 'right');
-            $(deletediv).append('<a href="#"><img src="images/delete_20.png"/></a>');
-            $(productdiv).append(descriptiondiv);
-            $(productdiv).append(deletediv);
-            $(cartoverlaydiv).append(productdiv);
-          }
-          $(cartoverlaydiv).append('<div class="row" style="margin-bottom: 0px"><hr/><div style="float:left"><h6>Total Items: ' + cart.totalitems + '</h6></div><div style="float:right"><h6>Total Price: ' + formatCurrency(cart.totalprice) + '</h6></div><hr/></div>');
-          $(cartoverlaydiv).append('<div class="row" style="font-size: x-small;margin-bottom: 0px"><br/>To access this cart from another browser, use this URL:<br/> http://127.0.0.1/TCWHome.html?cartid=' + cart.cartid + '</div>');
-          $('body').prepend(cartoverlaydiv);
-          return $(cartoverlaydiv).fadeIn(100);
-        });
-      }
     });
   });
 
@@ -171,7 +142,7 @@
     }
   };
 
-  formatCurrency = function(number) {
+  this.formatCurrency = function(number) {
     return "$" + parseFloat(number.toFixed(2));
   };
 

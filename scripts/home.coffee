@@ -1,4 +1,3 @@
-# TODO: Build lil' mouseover thingie
 # TODO: Use backbone.js to manage model state, sync cart area in banner, etc.
 # TODO: Put strings in a resource file
 
@@ -55,37 +54,6 @@ jQuery().ready ($) ->
     removefromcart quantity,asst3
     return false
 
-# TODO: Clean up crappy code
-# TODO: Move out styling
-# TODO: Look for number of items in cart and give the user a message if there are none.
-# TODO: Implement item deletion
-# TODO: Pretty up the UI
-# TODO: Wire up this div to get updated when cart changes
-
-  $('.cart').hover(
-    -> if not $('#cartoverlay').is(":visible")
-      now.cart.get (cart) ->
-        cartoverlaydiv = document.createElement 'div'
-        cartoverlaydiv.id = 'cartoverlay'
-        $(cartoverlaydiv).append('<div class="row"><h5 style="float:left;margin-left:10px">My Cart</h5><img src="images/close_20.png" style="float:right" onclick="$(\'#cartoverlay\').fadeOut(100).remove()"/></div>')
-        for item in cart.items
-          productdiv = document.createElement 'div'
-          $(productdiv).addClass 'row'
-          descriptiondiv = document.createElement 'div'
-          $(descriptiondiv).css 'float','left'
-          $(descriptiondiv).append('<img src="images/' + item.item.thumbnail + '" height="30px" width="30px"/>  ' + item.item.displayname + ' :  Qty. ' + item.quantity + ' @ ' + item.item.price)
-          deletediv = document.createElement 'div'
-          $(deletediv).css 'float','right'
-          $(deletediv).append '<a href="#"><img src="images/delete_20.png"/></a>'
-          $(productdiv).append descriptiondiv
-          $(productdiv).append deletediv
-          $(cartoverlaydiv).append(productdiv)
-        $(cartoverlaydiv).append('<div class="row" style="margin-bottom: 0px"><hr/><div style="float:left"><h6>Total Items: ' + cart.totalitems + '</h6></div><div style="float:right"><h6>Total Price: ' + formatCurrency(cart.totalprice) + '</h6></div><hr/></div>')
-        $(cartoverlaydiv).append('<div class="row" style="font-size: x-small;margin-bottom: 0px"><br/>To access this cart from another browser, use this URL:<br/> http://127.0.0.1/TCWHome.html?cartid=' + cart.cartid + '</div>' )
-        $('body').prepend(cartoverlaydiv)
-        $(cartoverlaydiv).fadeIn(100)
-  )
-
 # In a real app, maybe we'd do something like this?
 # $.get 'services/productdata', (data) ->
 #   productdata = data
@@ -137,7 +105,7 @@ removefromcart = (quantity,item) ->
     now.cart.remove quantity,item
     now.updatecarts()
 
-formatCurrency = (number) ->
+@formatCurrency = (number) ->
   return "$" + parseFloat number.toFixed 2
 
 getcookie = (name) ->
@@ -163,3 +131,4 @@ now.presentmessage = (message, style) ->
 
 now.ready () ->
   now.claimcart cartid
+
