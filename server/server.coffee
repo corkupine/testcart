@@ -1,3 +1,13 @@
+# TODO: Look at frameworks that use node.js for cookies/sessions, persistence, etc. Node.js is *raw*
+#   https://github.com/senchalabs/connect
+#   http://expressjs.com/guide.html
+#   http://geddyjs.org/
+# TODO: Perf this whole thing:
+#   Concat/minify/gzip all js and css
+#   Point to CDN where possible
+#   'Expires' header (maybe frameworks above will help?)
+#   Look @ cookies situation
+
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
@@ -20,7 +30,7 @@ server = http.createServer (request, response) ->
           response.end()
         else
           response.writeHead 200,
-          if iscookieset(request.headers.cookie,cartid) then {'Content-Type': contentType}
+          if iscookieset(request.headers.cookie,cartid) or contentType isnt 'text/html' then {'Content-Type': contentType}
           else {'Content-Type': contentType,'Set-Cookie': 'cartid=' + cartid}
           response.end content, 'utf-8'
     else
@@ -78,7 +88,7 @@ createCart = (cartid) ->
       else
          existingitem.quantity -= quantity
          sendmessage _cart.cartid,quantity + " of " + item.displayname + " removed from your cart.","info"
-      _cart.totalitems += quantity
+      _cart.totalitems -= quantity
       _cart.totalprice += -quantity * item.price
   api.get = (callback) ->
     callback(_cart)

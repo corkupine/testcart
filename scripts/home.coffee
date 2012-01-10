@@ -122,12 +122,17 @@ now.updatecart = () ->
   now.cart.get (cart) ->
     $('#cartTotal').html formatCurrency(cart.totalprice)
     $('#itemQuantity').html cart.totalitems + " Items"
+    if $('#cartoverlay').is(":visible")
+      $('#totalitems').html '<h6>Total Items: ' + cart.totalitems + '</h6>'
+      $('#totalprice').html '<h6>Total Price: ' + formatCurrency(cart.totalprice) + '</h6>'
+      $('#products').remove()
+      $('#productsholder').append getProductsDiv(cart)
 
 now.presentmessage = (message, style) ->
   if style is "info"
-    $.jnotify message
+    $.jnotify message,1000
   else
-    $.jnotify message,style
+    $.jnotify message,style,1000
 
 now.ready () ->
   now.claimcart cartid

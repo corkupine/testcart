@@ -167,15 +167,21 @@
   now.updatecart = function() {
     return now.cart.get(function(cart) {
       $('#cartTotal').html(formatCurrency(cart.totalprice));
-      return $('#itemQuantity').html(cart.totalitems + " Items");
+      $('#itemQuantity').html(cart.totalitems + " Items");
+      if ($('#cartoverlay').is(":visible")) {
+        $('#totalitems').html('<h6>Total Items: ' + cart.totalitems + '</h6>');
+        $('#totalprice').html('<h6>Total Price: ' + formatCurrency(cart.totalprice) + '</h6>');
+        $('#products').remove();
+        return $('#productsholder').append(getProductsDiv(cart));
+      }
     });
   };
 
   now.presentmessage = function(message, style) {
     if (style === "info") {
-      return $.jnotify(message);
+      return $.jnotify(message, 1000);
     } else {
-      return $.jnotify(message, style);
+      return $.jnotify(message, style, 1000);
     }
   };
 

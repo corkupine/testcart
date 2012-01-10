@@ -3,6 +3,7 @@ jQuery().ready ($) ->
     gallery $(this)
 
 galleryfadespeed = 300
+
 gallery = (element) ->
   gallerydiv = document.createElement 'div'
   $(gallerydiv).prepend('<p>Click to Close</p><img src="images/' + $(element).attr('id') + '_500.png"/>')

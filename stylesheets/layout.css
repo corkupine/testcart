@@ -10,54 +10,52 @@
 /* Table of Content
 ==================================================
 	#Site Styles
-	#Super-Lightweight "Lightbox"
 	#Page Styles
 	#Media Queries
 	#Font-Face */
 
 /* #Site Styles
 ================================================== */
+
+/* Banner and cart */
 .cart {
     margin-top: 40px;
     text-align:center;
+}
+.cart p {
+    margin: 0 0 0 0;
+    font-size: x-small;
+}
+#itemQuantity {
+    float: left;
+}
+
+#cartTotal {
+    float: right;
+    margin-right: 5px;
 }
 .banner {
     background-color: #000000;
     color: #FFFFFF;
 }
+#bannerleft {
+    padding-top: 20px;
+}
 
-/* #Super-Lightweight "Lightbox"
-================================================== */
-.faded{
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    z-index:1001;
-    -moz-opacity: 0.8;
-    opacity:.80;
-    filter: alpha(opacity=80);
+#bannerleft h1 {
+    color: #FFFFFF;
+    margin-top: 10px;
 }
-.gallerycontent {
-    display: none;
-    position: fixed;
-    top: 100px;
-    left: 100px;
-    padding: 16px;
-    border: 8px solid #dbdbdb;
-    background-color: white;
-    z-index:1002;
-    overflow: auto;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+
+#bannerleft h5 {
+    color: #FFFFFF;
+    margin-left: 10px;
 }
+/* Cart overlay */
 #cartoverlay {
     position: fixed;
     top: 100px;
-    right: 100px;
+    right: 200px;
     z-index: 1000;
     border: 2px solid #dbdbdb;
     background-color: white;
@@ -68,8 +66,8 @@
     border-radius: 5px;
 }
 #cartoverlay .row hr {
-     margin-bottom: 0px;
- }
+    margin-bottom: 0px;
+}
 
 #cartoverlay h4 {
     float:left;
@@ -85,11 +83,6 @@
 {
     padding:10px;
     margin-bottom:0px;
-}
-
-#cartoverlay .odd
-{
-    background-color:#dbdbdb;
 }
 
 #cartoverlay .description, #totalitems
@@ -118,6 +111,45 @@
     font-size: x-small;
     margin-bottom: 0px;
 }
+#products > div:nth-child(2n+1)
+{
+    background-color:#dbdbdb;
+}
+/* Lightbox-like stuff */
+.faded{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);
+}
+.gallerycontent {
+    display: none;
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    padding: 16px;
+    border: 8px solid #dbdbdb;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+/* Product sections */
+.addRemove {
+    margin: -32px 0 0 50px;
+}
+.spinnerArea {
+    height: 30px;
+}
+
 /* #Page Styles
 ================================================== */
 

@@ -29,7 +29,7 @@
             response.writeHead(500);
             return response.end();
           } else {
-            response.writeHead(200, iscookieset(request.headers.cookie, cartid) ? {
+            response.writeHead(200, iscookieset(request.headers.cookie, cartid) || contentType !== 'text/html' ? {
               'Content-Type': contentType
             } : {
               'Content-Type': contentType,
@@ -114,7 +114,7 @@
           existingitem.quantity -= quantity;
           sendmessage(_cart.cartid, quantity + " of " + item.displayname + " removed from your cart.", "info");
         }
-        _cart.totalitems += quantity;
+        _cart.totalitems -= quantity;
         return _cart.totalprice += -quantity * item.price;
       }
     };

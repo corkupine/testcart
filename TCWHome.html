@@ -36,26 +36,29 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png"/>
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png"/>
 
+    <style type="text/css">
+        #bannerLogo {
+            float: left;
+        }
+    </style>
 </head>
 <body>
-
-<!--TODO: Move all styling out-->
 
 <!-- Primary Page Layout
     ================================================== -->
 <div class="container">
     <div class="sixteen columns banner">
-        <div class="fourteen columns alpha" style="padding-top: 20px">
-            <img src="images/tcLogo.png" style="float:left;"/>
-            <h1 style="color: #FFFFFF;margin-top: 10px">ThunderCats Warehouse</h1>
-            <h5 style="color: #FFFFFF; margin-left: 10px">Serving all your ThunderCats needs!</h5>
+        <div class="fourteen columns alpha" id="bannerleft">
+            <img src="images/tcLogo.png" id="bannerLogo"/>
+            <h1>ThunderCats Warehouse</h1>
+            <h5>Serving all your ThunderCats needs!</h5>
         </div>
         <div class="two columns omega cart">
             <div>
                 <img src="images/cart.png"/>
-                <p style="margin: 0 0 0 0; font-size: x-small;">My Cart</p>
-                <p id="itemQuantity" style="margin: 0 0 0 0; font-size: x-small;float:left">0 Items</p>
-                <p id="cartTotal" style="margin: 0 5px 0 0; font-size: x-small;float:right">$0</p>
+                <p>My Cart</p>
+                <p id="itemQuantity">0 Items</p>
+                <p id="cartTotal">$0</p>
             </div>
         </div>
     </div>
@@ -68,10 +71,10 @@
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <div id="liono" class="thumbnail" ><img src="images/Liono_150.png"/></div>
             <p>$75.00</p>
-            <div style="height:30px">
+            <div class="spinnerArea">
                 <input type="text" id="spinner1" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
-            <div style="margin:-32px 0 0 50px">
+            <div class="addRemove">
                 <input type="button"  id="addLiono" value="Add"/>
                 <input type="button" id="removeLiono" value="Remove"/>
             </div>
@@ -81,10 +84,10 @@
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <div id="tygra" class="thumbnail" ><img src="images/Tygra_150.png"/></div>
             <p>$75.00</p>
-            <div style="height:30px">
+            <div class="spinnerArea">
                 <input type="text" id="spinner2" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
-            <div style="margin:-32px 0 0 50px">
+            <div class="addRemove">
                 <input type="button" id="addTygra" value="Add"/>
                 <input type="button" id="removeTygra" value="Remove"/>
             </div>
@@ -94,10 +97,10 @@
             <p>Detailed and hand-painted, 1 of 200 made! Includes Certificate of Authenticity.</p>
             <div id="asst4" class="thumbnail" ><img src="images/Asst4_150.png"/></div>
             <p>$145.00</p>
-            <div style="height:30px">
+            <div class="spinnerArea">
                 <input type="text" id="spinner3" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
-            <div style="margin:-32px 0 0 50px">
+            <div class="addRemove">
                 <input type="button" id="addAsst4" value="Add"/>
                 <input type="button" id="removeAsst4" value="Remove"/>
             </div>
@@ -108,10 +111,10 @@
             <h4>Collectors Set 1</h4>
             <p>Includes characters + accessories</p>
             <div id="asst1" class="thumbnail" ><img src="images/Asst1_150.png"/></div><p>$75.00</p>
-            <div style="height:30px">
+            <div class="spinnerArea">
                 <input type="text" id="spinner4" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
-            <div style="margin:-32px 0 0 50px">
+            <div class="addRemove">
                 <input type="button" id="addAsst1" value="Add"/>
                 <input type="button" id="removeAsst1" value="Remove"/>
             </div>
@@ -120,10 +123,10 @@
             <h4>Collectors Set 2</h4>
             <p>Includes characters + accessories</p>
             <div id="asst2" class="thumbnail" ><img src="images/Asst2_150.png"/></div><p>$75.00</p>
-            <div style="height:30px">
+            <div class="spinnerArea">
                 <input type="text" id="spinner5" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
-            <div style="margin:-32px 0 0 50px">
+            <div class="addRemove">
                 <input type="button" id="addAsst2" value="Add"/>
                 <input type="button" id="removeAsst2" value="Remove"/>
             </div>
@@ -132,10 +135,10 @@
             <h4>Collectors Set 3</h4>
             <p>Includes characters + accessories</p>
             <div id="asst3" class="thumbnail" ><img src="images/Asst3_150.png"/></div><p>$75.00</p>
-            <div style="height:30px">
+            <div class="spinnerArea">
                 <input type="text" id="spinner6" class="TCWSpinner" value="0" style="width:35px"/>
             </div>
-            <div style="margin:-32px 0 0 50px">
+            <div class="addRemove">
                 <input type="button" id="addAsst3" value="Add"/>
                 <input type="button" id="removeAsst3" value="Remove"/>
             </div>
