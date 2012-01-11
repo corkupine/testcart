@@ -17,24 +17,26 @@
           $(cartoverlaydiv).append('<div class="row" id="linkhint"><br/>To access this cart from another browser, use this URL:<br/> http://127.0.0.1/TCWHome.html?cartid=' + cart.cartid + '</div>');
           $('body').prepend(cartoverlaydiv);
           $(cartoverlaydiv).fadeIn(100);
-          $('.closeimg').click(function() {
-            return $('#cartoverlay').fadeOut(100).remove();
-          });
-          return $('.delete').click(function() {
-            var itemcode;
-            itemcode = $(this).attr('id').substring(7);
-            return now.cart.get(function(cart) {
-              var item, _i, _len, _ref;
-              _ref = cart.items;
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                item = _ref[_i];
-                if (item.item.itemcode === itemcode) {
-                  now.cart.remove(item.quantity, item.item);
-                  now.updatecarts();
+          return $('#cartoverlay').click(function(event) {
+            var itemcode, targetElement;
+            targetElement = event.target;
+            if ($(targetElement).is('.delete')) {
+              itemcode = $(targetElement).attr('id').substring(7);
+              return now.cart.get(function(cart) {
+                var item, _i, _len, _ref;
+                _ref = cart.items;
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  item = _ref[_i];
+                  if (item.item.itemcode === itemcode) {
+                    now.cart.remove(item.quantity, item.item);
+                    now.updatecarts();
+                  }
                 }
-              }
-              return $('#' + itemcode).fadeOut(100).remove();
-            });
+                return $('#' + itemcode).fadeOut(100).remove();
+              });
+            } else if ($(targetElement).is('.closeimg')) {
+              return $('#cartoverlay').fadeOut(100).remove();
+            }
           });
         });
       }
@@ -64,9 +66,7 @@
       $(descriptiondiv).addClass('description');
       $(descriptiondiv).append('<img class="carticon rowimage" src="images/' + item.item.thumbnail + '"/>  ' + item.item.displayname + ' :  Qty. ' + item.quantity + ' @ ' + formatCurrency(item.item.price));
       deletediv = document.createElement('div');
-      deletediv.id = 'delete_' + item.item.itemcode;
-      $(deletediv).addClass('delete');
-      $(deletediv).append('<img class="rowimage" src="images/delete_20.png"/>');
+      $(deletediv).append('<img class="rowimage delete" id="delete_' + item.item.itemcode + '" src="images/delete_20.png"/>');
       $(productdiv).append(descriptiondiv);
       $(productdiv).append(deletediv);
       $(productsdiv).append(productdiv);

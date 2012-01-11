@@ -1,5 +1,3 @@
-# TODO: Delete item buttons stop working after refresh of productsdiv (probably due to scope/closure)
-
 jQuery().ready ($) ->
   $('.cart').hover(
     -> if not $('#cartoverlay').is(":visible")
@@ -16,18 +14,18 @@ jQuery().ready ($) ->
         $(cartoverlaydiv).append('<div class="row" id="linkhint"><br/>To access this cart from another browser, use this URL:<br/> http://127.0.0.1/TCWHome.html?cartid=' + cart.cartid + '</div>' )
         $('body').prepend(cartoverlaydiv)
         $(cartoverlaydiv).fadeIn(100)
-
-        $('.closeimg').click () ->
-          $('#cartoverlay').fadeOut(100).remove()
-
-        $('.delete').click () ->
-          itemcode = $(this).attr('id').substring(7)
-          now.cart.get (cart) ->
-            for item in cart.items
-              if item.item.itemcode is itemcode
-                now.cart.remove item.quantity,item.item
-                now.updatecarts()
-            $('#' + itemcode).fadeOut(100).remove()
+        $('#cartoverlay').click (event) ->
+          targetElement = event.target
+          if $(targetElement).is '.delete'
+            itemcode = $(targetElement).attr('id').substring(7)
+            now.cart.get (cart) ->
+              for item in cart.items
+                if item.item.itemcode is itemcode
+                  now.cart.remove item.quantity,item.item
+                  now.updatecarts()
+              $('#' + itemcode).fadeOut(100).remove()
+          else if $(targetElement).is '.closeimg'
+            $('#cartoverlay').fadeOut(100).remove()
   )
 
 @getProductsDiv = (cart) ->
@@ -48,9 +46,7 @@ jQuery().ready ($) ->
     $(descriptiondiv).addClass 'description'
     $(descriptiondiv).append('<img class="carticon rowimage" src="images/' + item.item.thumbnail + '"/>  ' + item.item.displayname + ' :  Qty. ' + item.quantity + ' @ ' + formatCurrency(item.item.price))
     deletediv = document.createElement 'div'
-    deletediv.id = 'delete_' + item.item.itemcode
-    $(deletediv).addClass 'delete'
-    $(deletediv).append '<img class="rowimage" src="images/delete_20.png"/>'
+    $(deletediv).append '<img class="rowimage delete" id="delete_' + item.item.itemcode + '" src="images/delete_20.png"/>'
     $(productdiv).append descriptiondiv
     $(productdiv).append deletediv
     $(productsdiv).append(productdiv)
