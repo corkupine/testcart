@@ -3,42 +3,42 @@
         "displayname":"Liono - Limited Edition",
         "itemcode":"liono",
         "price":75,
-        "thumbnail":"liono_150.png",
-        "gallery":"liono_500.png"
+        "thumbnail":"Liono_150.png",
+        "gallery":"Liono_500.png"
     },
     {
         "displayname":"Tygra - Limited Edition",
         "itemcode":"tygra",
         "price":75,
-        "thumbnail":"tygra_150.png",
-        "gallery":"tygra_500.png"
+        "thumbnail":"Tygra_150.png",
+        "gallery":"Tygra_500.png"
     },
     {
         "displayname":"Liono & Tygra Bundle",
         "itemcode":"asst4",
         "price":145,
-        "thumbnail":"asst4_150.png",
-        "gallery":"asst4_500.png"
+        "thumbnail":"Asst4_150.png",
+        "gallery":"Asst4_500.png"
     },
     {
         "displayname":"Collectors Set 1",
         "itemcode":"asst1",
         "price":75,
-        "thumbnail":"asst1_150.png",
-        "gallery":"asst1_500.png"
+        "thumbnail":"Asst1_150.png",
+        "gallery":"Asst1_500.png"
     },
     {
         "displayname":"Collectors Set 2",
         "itemcode":"asst2",
         "price":75,
-        "thumbnail":"asst2_150.png",
-        "gallery":"asst2_500.png"
+        "thumbnail":"Asst2_150.png",
+        "gallery":"Asst2_500.png"
     },
     {
         "displayname":"Collectors Set 3",
         "itemcode":"asst3",
         "price":75,
-        "thumbnail":"asst3_150.png",
-        "gallery":"asst3_500.png"
+        "thumbnail":"Asst3_150.png",
+        "gallery":"Asst3_500.png"
     }
 ]
