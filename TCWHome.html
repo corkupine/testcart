@@ -22,25 +22,20 @@
     <!-- CSS
    ================================================== -->
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/ui-lightness/jquery-ui.css" type="text/css" rel="stylesheet"/>
-    <link rel="stylesheet" href="stylesheets/ui.spinner.css"/>
+    <!--<link rel="stylesheet" href="stylesheets/ui.spinner.css"/>
     <link rel="stylesheet" href="stylesheets/base.css"/>
     <link rel="stylesheet" href="stylesheets/skeleton.css"/>
     <link rel="stylesheet" href="stylesheets/layout.css"/>
-    <link rel="stylesheet" href="stylesheets/jquery.jnotify.css"/>
+    <link rel="stylesheet" href="stylesheets/jquery.jnotify.css"/>-->
+    <link rel="stylesheet" href="stylesheets/combined.min.css"/>
 
     <!-- Favicons
      ================================================== -->
-    <!--TODO: Improve favicon and touch icons-->
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png"/>
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png"/>
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png"/>
 
-    <style type="text/css">
-        #bannerLogo {
-            float: left;
-        }
-    </style>
 </head>
 <body>
 
@@ -50,8 +45,8 @@
     <div class="sixteen columns banner">
         <div class="fourteen columns alpha" id="bannerleft">
             <img src="images/tcLogo.png" id="bannerLogo"/>
-            <h1>ThunderCats Warehouse</h1>
-            <h5>Serving all your ThunderCats needs!</h5>
+            <h1 id="bannerText">ThunderCats Warehouse</h1>
+            <h5 id="bannerTagline">Serving all your ThunderCats needs!</h5>
         </div>
         <div class="two columns omega cart">
             <div>
@@ -63,8 +58,8 @@
         </div>
     </div>
     <div class="sixteen columns"><br/></div>
-    <!--TODO: Break out new CSS class for "item". In initializer, populate img src, div ids, etc.
-        so all that stuff isn't hard-coded. Store image names with product data-->
+    <!--TODO: Break out new CSS class for "item". In initializer, populate child elements'
+        img src, div ids, etc. so all that stuff isn't hard-coded.-->
     <div class="sixteen columns">
         <div class="one-third column alpha">
             <h4>Liono - Limited Edition</h4>
@@ -153,12 +148,12 @@
 <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script src="nowjs/now.js"></script>
-<script src="scripts/jquery.jnotify.min.js"></script>
+<!--<script src="scripts/jquery.jnotify.min.js"></script>
 <script src="scripts/ui.spinner.min.js"></script>
-<script src="scripts/tabs.js"></script>
 <script src="scripts/home.js"></script>
 <script src="scripts/gallery.js"></script>
-<script src="scripts/cartoverlay.js"></script>
+<script src="scripts/cartoverlay.js"></script>-->
+<script src="scripts/combined.min.js"></script>
 
 <!-- End Document
 ================================================== -->

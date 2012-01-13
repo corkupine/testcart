@@ -1,5 +1,15 @@
-# TODO: Use backbone.js to manage model state, sync cart area in banner, etc.
+# TODO: Use backbone.js, (or weld, jade, mustache, dust) to manage model state/templating, sync cart area in banner, etc.
+#       Backbone/nowjs connector: https://github.com/mkuklis/backbone-nowjs
 # TODO: Put strings in a resource file
+# TODO: Make use of sugar, underscore, prototype (on client for DOM stuff) etc. instead of reinventing wheel,
+#       and to make it more readable
+# TODO: DRY up instances of products and associated events
+
+# TODO: This is a start, but I need to use the returned array to set up each product area with description, pics, click event, etc.
+products = []
+productsurl = 'http://' + $(location).attr('host') + '/products'
+$.get productsurl, (productdata) ->
+  products = productdata
 
 jQuery().ready ($) ->
   $('.TCWSpinner').spinner
@@ -7,93 +17,52 @@ jQuery().ready ($) ->
     max: 99
   $('#addLiono').click () ->
     quantity=parseInt $('#spinner1').val()
-    addtocart quantity,liono
+    addtocart quantity,products[0]
     return false
   $('#removeLiono').click () ->
     quantity=parseInt $('#spinner1').val()
-    removefromcart quantity,liono
+    removefromcart quantity,products[0]
     return false
   $('#addTygra').click () ->
     quantity=parseInt $('#spinner2').val()
-    addtocart quantity,tygra
+    addtocart quantity,products[1]
     return false
   $('#removeTygra').click () ->
     quantity=parseInt $('#spinner2').val()
-    removefromcart quantity,tygra
+    removefromcart quantity,products[1]
     return false
   $('#addAsst4').click () ->
     quantity=parseInt $('#spinner3').val()
-    addtocart quantity,asst4
+    addtocart quantity,products[2]
     return false
   $('#removeAsst4').click () ->
     quantity=parseInt $('#spinner3').val()
-    removefromcart quantity,asst4
+    removefromcart quantity,products[2]
     return false
   $('#addAsst1').click () ->
     quantity=parseInt $('#spinner4').val()
-    addtocart quantity,asst1
+    addtocart quantity,products[3]
     return false
   $('#removeAsst1').click () ->
     quantity=parseInt $('#spinner4').val()
-    removefromcart quantity,asst1
+    removefromcart quantity,products[3]
     return false
   $('#addAsst2').click () ->
     quantity=parseInt $('#spinner5').val()
-    addtocart quantity,asst2
+    addtocart quantity,products[4]
     return false
   $('#removeAsst2').click () ->
     quantity=parseInt $('#spinner5').val()
-    removefromcart quantity,asst2
+    removefromcart quantity,products[4]
     return false
   $('#addAsst3').click () ->
     quantity=parseInt $('#spinner6').val()
-    addtocart quantity,asst3
+    addtocart quantity,products[5]
     return false
   $('#removeAsst3').click () ->
     quantity=parseInt $('#spinner6').val()
-    removefromcart quantity,asst3
+    removefromcart quantity,products[5]
     return false
-
-# In a real app, maybe we'd do something like this?
-# $.get 'services/productdata', (data) ->
-#   productdata = data
-
-liono =
-  displayname:'Liono - Limited Edition'
-  itemcode:'liono'
-  price:75
-  thumbnail:'liono_150.png'
-  gallery:'liono_500.png'
-tygra =
-  displayname:'Tygra - Limited Edition'
-  itemcode:'tygra'
-  price:75
-  thumbnail:'tygra_150.png'
-  gallery:'tygra_500.png'
-asst4 =
-  displayname:'Liono & Tygra Bundle'
-  itemcode:'asst4'
-  price:145
-  thumbnail:'asst4_150.png'
-  gallery:'asst4_500.png'
-asst1 =
-  displayname:'Collectors Set 1'
-  itemcode:'asst1'
-  price:75
-  thumbnail:'asst1_150.png'
-  gallery:'asst1_500.png'
-asst2 =
-  displayname:'Collectors Set 2'
-  itemcode:'asst2'
-  price:75
-  thumbnail:'asst2_150.png'
-  gallery:'asst2_500.png'
-asst3 =
-  displayname:'Collectors Set 3'
-  itemcode:'asst3'
-  price:75
-  thumbnail:'asst3_150.png'
-  gallery:'asst3_500.png'
 
 addtocart = (quantity, item) ->
   if quantity > 0

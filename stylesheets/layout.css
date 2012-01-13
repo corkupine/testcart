@@ -27,12 +27,15 @@
     font-size: x-small;
 }
 #itemQuantity {
-    float: left;
+    display:inline;
 }
 
 #cartTotal {
-    float: right;
+    display:inline;
     margin-right: 5px;
+}
+#bannerLogo {
+    float: left;
 }
 .banner {
     background-color: #000000;
@@ -50,6 +53,13 @@
 #bannerleft h5 {
     color: #FFFFFF;
     margin-left: 10px;
+}
+#bannerText {
+    margin-left: 5px;
+}
+
+#bannerTagline {
+    text-align: center;
 }
 /* Cart overlay */
 #cartoverlay {

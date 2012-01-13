@@ -1,22 +1,47 @@
-# TODO: Look at frameworks that use node.js for cookies/sessions, persistence, etc. Node.js is *raw*
+# TODO: Look at frameworks that use node.js, for cookies/sessions, routing, better server features, persistence, etc. Node.js is *raw*
 #   https://github.com/senchalabs/connect
-#   http://expressjs.com/guide.html
+#   http://expressjs.com/guide.html - looks like it might fit the bill
 #   http://geddyjs.org/
-# TODO: Perf this whole thing:
-#   Concat/minify/gzip all js and css
-#   Point to CDN where possible
-#   'Expires' header (maybe frameworks above will help?)
-#   Look @ cookies situation
+# TODO: Redis for persistence/store (hydrate product options (instances of model), save cart, atomic operations, etc.)
+# TODO: Ohm looks like it might alleviate some redis object storage headaches
+#   http://ohm.keyvalue.org/
 
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
+# redis = require 'redis'
+url = require 'url'
+
+###
+client = redis.createClient()
+
+client.on "error", (err) ->
+  console.log("Error "+ err)
+
+client.on "ready", () ->
+  getProducts()
+###
+
+productFilePath = 'products.json'
+
+### Products would normally be maintained through some kind of admin interface, but we're faking, OK?
+getProducts = () ->
+  fs.readFile productFilePath, (error,content) ->
+    if error
+      console.log error
+    else
+      products = JSON.parse content
+      for product in products
+        productkey = 'products:' + product.itemcode
+        client.hmset productkey, product
+###
 
 server = http.createServer (request, response) ->
   console.log 'Request starting: ' + request.headers.cookie
-  filePath = '.' + request.url.split("?")[0]
+  uri = url.parse(request.url).pathname
+  filePath = path.join process.cwd(), uri
+  if uri is '/' then filePath = path.join process.cwd(), '/TCWHome.html'
   cartid = getcartid request
-  if filePath is './' then filePath = './TCWHome.html'
   extension = path.extname filePath
   contentType = 'text/html'
   switch extension
@@ -34,8 +59,28 @@ server = http.createServer (request, response) ->
           else {'Content-Type': contentType,'Set-Cookie': 'cartid=' + cartid}
           response.end content, 'utf-8'
     else
-      response.writeHead 404
-      response.end()
+      if filePath.indexOf './Products' is 0
+        response.writeHead 200, {'Content-Type': 'application/json'}
+        # TODO: Cannot find a nice way to get multiple hashes out of redis so far. Pipelining may be best option.
+        #       http://stackoverflow.com/questions/4929202/most-efficient-way-to-get-several-hashes-in-redis
+        # TODO: For some reason, only the last object is returned below. Strange, because the console.log line
+        #       prints the entire and complete stringified array of objects
+        ###
+        products = []
+        client.keys 'products*', (err,keys) ->
+          for i in [0... keys.length]
+            client.hgetall keys[i], (err,obj) ->
+              products.push obj
+              if i is keys.length
+                console.log JSON.stringify products
+                response.end JSON.stringify products
+        ###
+        # Temporary redis simulator :)
+        fs.readFile 'products.json', (error,content) ->
+          response.end content
+      else
+        response.writeHead 404
+        response.end()
 server.listen 80
 
 nowjs = require 'now'
@@ -57,6 +102,7 @@ everyone.now.updatecarts = () ->
   if this.now.cartsession isnt "nosession"
     nowjs.getGroup(this.now.cartsession).now.updatecart()
 
+# TODO: Keep this in redis. Client.del on disconnect unless user exercises "save cart" option
 createCart = (cartid) ->
   _cart =
   items: []

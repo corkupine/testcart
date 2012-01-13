@@ -1,5 +1,5 @@
 (function() {
-  var createCart, everyone, fs, getParameterByName, getcartid, getcookie, getguid, http, iscookieset, itemincart, itemindex, nowjs, path, sendmessage, server;
+  var createCart, everyone, fs, getParameterByName, getcartid, getcookie, getguid, http, iscookieset, itemincart, itemindex, nowjs, path, productFilePath, sendmessage, server, url;
 
   http = require('http');
 
@@ -7,12 +7,40 @@
 
   path = require('path');
 
+  url = require('url');
+
+  /*
+  client = redis.createClient()
+  
+  client.on "error", (err) ->
+    console.log("Error "+ err)
+  
+  client.on "ready", () ->
+    getProducts()
+  */
+
+  productFilePath = 'products.json';
+
+  /*
+  # This would normally be maintained through some kind of admin interface, but we're faking, OK?
+  getProducts = () ->
+    fs.readFile productFilePath, (error,content) ->
+      if error
+        console.log error
+      else
+        products = JSON.parse content
+        for product in products
+          productkey = 'products:' + product.itemcode
+          client.hmset productkey, product
+  */
+
   server = http.createServer(function(request, response) {
-    var cartid, contentType, extension, filePath;
+    var cartid, contentType, extension, filePath, uri;
     console.log('Request starting: ' + request.headers.cookie);
-    filePath = '.' + request.url.split("?")[0];
+    uri = url.parse(request.url).pathname;
+    filePath = path.join(process.cwd(), uri);
+    if (uri === '/') filePath = path.join(process.cwd(), '/TCWHome.html');
     cartid = getcartid(request);
-    if (filePath === './') filePath = './TCWHome.html';
     extension = path.extname(filePath);
     contentType = 'text/html';
     switch (extension) {
@@ -39,8 +67,27 @@
           }
         });
       } else {
-        response.writeHead(404);
-        return response.end();
+        if (filePath.indexOf('./Products' === 0)) {
+          response.writeHead(200, {
+            'Content-Type': 'application/json'
+          });
+          /*
+                  products = []
+                  client.keys 'products*', (err,keys) ->
+                    for i in [0... keys.length]
+                      client.hgetall keys[i], (err,obj) ->
+                        products.push obj
+                        if i is keys.length
+                          console.log JSON.stringify products
+                          response.end JSON.stringify products
+          */
+          return fs.readFile('products.json', function(error, content) {
+            return response.end(content);
+          });
+        } else {
+          response.writeHead(404);
+          return response.end();
+        }
       }
     });
   });

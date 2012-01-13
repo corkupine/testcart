@@ -1,5 +1,5 @@
 (function() {
-  var addtocart, asst1, asst2, asst3, asst4, cartid, getcookie, liono, removefromcart, tygra;
+  var addtocart, cartid, getcookie, products, productsurl, removefromcart;
 
   jQuery().ready(function($) {
     $('.TCWSpinner').spinner({
@@ -9,124 +9,84 @@
     $('#addLiono').click(function() {
       var quantity;
       quantity = parseInt($('#spinner1').val());
-      addtocart(quantity, liono);
+      addtocart(quantity, products[0]);
       return false;
     });
     $('#removeLiono').click(function() {
       var quantity;
       quantity = parseInt($('#spinner1').val());
-      removefromcart(quantity, liono);
+      removefromcart(quantity, products[0]);
       return false;
     });
     $('#addTygra').click(function() {
       var quantity;
       quantity = parseInt($('#spinner2').val());
-      addtocart(quantity, tygra);
+      addtocart(quantity, products[1]);
       return false;
     });
     $('#removeTygra').click(function() {
       var quantity;
       quantity = parseInt($('#spinner2').val());
-      removefromcart(quantity, tygra);
+      removefromcart(quantity, products[1]);
       return false;
     });
     $('#addAsst4').click(function() {
       var quantity;
       quantity = parseInt($('#spinner3').val());
-      addtocart(quantity, asst4);
+      addtocart(quantity, products[2]);
       return false;
     });
     $('#removeAsst4').click(function() {
       var quantity;
       quantity = parseInt($('#spinner3').val());
-      removefromcart(quantity, asst4);
+      removefromcart(quantity, products[2]);
       return false;
     });
     $('#addAsst1').click(function() {
       var quantity;
       quantity = parseInt($('#spinner4').val());
-      addtocart(quantity, asst1);
+      addtocart(quantity, products[3]);
       return false;
     });
     $('#removeAsst1').click(function() {
       var quantity;
       quantity = parseInt($('#spinner4').val());
-      removefromcart(quantity, asst1);
+      removefromcart(quantity, products[3]);
       return false;
     });
     $('#addAsst2').click(function() {
       var quantity;
       quantity = parseInt($('#spinner5').val());
-      addtocart(quantity, asst2);
+      addtocart(quantity, products[4]);
       return false;
     });
     $('#removeAsst2').click(function() {
       var quantity;
       quantity = parseInt($('#spinner5').val());
-      removefromcart(quantity, asst2);
+      removefromcart(quantity, products[4]);
       return false;
     });
     $('#addAsst3').click(function() {
       var quantity;
       quantity = parseInt($('#spinner6').val());
-      addtocart(quantity, asst3);
+      addtocart(quantity, products[5]);
       return false;
     });
     return $('#removeAsst3').click(function() {
       var quantity;
       quantity = parseInt($('#spinner6').val());
-      removefromcart(quantity, asst3);
+      removefromcart(quantity, products[5]);
       return false;
     });
   });
 
-  liono = {
-    displayname: 'Liono - Limited Edition',
-    itemcode: 'liono',
-    price: 75,
-    thumbnail: 'liono_150.png',
-    gallery: 'liono_500.png'
-  };
+  products = [];
 
-  tygra = {
-    displayname: 'Tygra - Limited Edition',
-    itemcode: 'tygra',
-    price: 75,
-    thumbnail: 'tygra_150.png',
-    gallery: 'tygra_500.png'
-  };
+  productsurl = 'http://' + $(location).attr('host') + '/products';
 
-  asst4 = {
-    displayname: 'Liono & Tygra Bundle',
-    itemcode: 'asst4',
-    price: 145,
-    thumbnail: 'asst4_150.png',
-    gallery: 'asst4_500.png'
-  };
-
-  asst1 = {
-    displayname: 'Collectors Set 1',
-    itemcode: 'asst1',
-    price: 75,
-    thumbnail: 'asst1_150.png',
-    gallery: 'asst1_500.png'
-  };
-
-  asst2 = {
-    displayname: 'Collectors Set 2',
-    itemcode: 'asst2',
-    price: 75,
-    thumbnail: 'asst2_150.png',
-    gallery: 'asst2_500.png'
-  };
-
-  asst3 = {
-    displayname: 'Collectors Set 3',
-    itemcode: 'asst3',
-    price: 75,
-    thumbnail: 'asst3_150.png',
-    gallery: 'asst3_500.png'
-  };
+  $.get(productsurl, function(productdata) {
+    return products = productdata;
+  });
 
   addtocart = function(quantity, item) {
     if (quantity > 0) {
