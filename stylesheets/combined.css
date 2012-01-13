@@ -639,8 +639,8 @@ or wrap each row of columns in a <div class="row"> */
 /* Cart overlay */
 #cartoverlay {
     position: fixed;
-    top: 100px;
-    right: 200px;
+    top: 150px;
+    right: 100px;
     z-index: 1000;
     border: 2px solid #dbdbdb;
     background-color: white;
