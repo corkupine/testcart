@@ -4,7 +4,7 @@
     return $('.cart').hover(function() {
       if (!$('#cartoverlay').is(":visible")) {
         return now.cart.get(function(cart) {
-          var cartoverlaydiv, productsdiv, productsholderdiv;
+          var cartoverlaydiv, host, pathArray, productsdiv, productsholderdiv;
           cartoverlaydiv = document.createElement('div');
           cartoverlaydiv.id = 'cartoverlay';
           $(cartoverlaydiv).append('<div class="row"><h4>My Cart</h4><img class="closeimg" src="images/close_20.png"/></div>');
@@ -14,7 +14,9 @@
           $(productsholderdiv).append(productsdiv);
           $(cartoverlaydiv).append(productsholderdiv);
           $(cartoverlaydiv).append('<div class="row"><hr/><div id="totalitems"><h6>Total Items: ' + cart.totalitems + '</h6></div><div id="totalprice"><h6>Total Price: ' + formatCurrency(cart.totalprice) + '</h6></div><hr/></div>');
-          $(cartoverlaydiv).append('<div class="row" id="linkhint"><br/>To access this cart from another browser, use this URL:<br/><a href="http://127.0.0.1/TCWHome.html?cartid=' + cart.cartid + '"</a> http://127.0.0.1/TCWHome.html?cartid=' + cart.cartid + '</div>');
+          pathArray = window.location.href.split('/');
+          host = pathArray[2];
+          $(cartoverlaydiv).append('<div class="row" id="linkhint"><br/>To access this cart from another browser, use this URL:<br/><a href="http://' + host + '/TCWHome.html?cartid=' + cart.cartid + '"</a> http://' + host + '/TCWHome.html?cartid=' + cart.cartid + '</div>');
           $('body').prepend(cartoverlaydiv);
           $(cartoverlaydiv).fadeIn(100);
           return $('#cartoverlay').click(function(event) {
