@@ -1,5 +1,5 @@
 (function() {
-  var createCart, everyone, fs, getParameterByName, getcartid, getcookie, getguid, http, iscookieset, itemincart, itemindex, nowjs, path, productFilePath, sendmessage, server, url;
+  var client, createCart, everyone, fs, getParameterByName, getProductsFromRedis, getcartid, getcookie, getguid, http, iscookieset, itemincart, itemindex, nowjs, path, productFilePath, redis, sendmessage, server, updateRedisProductsFromFile, url;
 
   http = require('http');
 
@@ -7,32 +7,55 @@
 
   path = require('path');
 
+  redis = require('redis');
+
   url = require('url');
 
-  /*
-  client = redis.createClient()
-  
-  client.on "error", (err) ->
-    console.log("Error "+ err)
-  
-  client.on "ready", () ->
-    getProducts()
-  */
+  client = redis.createClient();
+
+  client.on("error", function(err) {
+    return console.log("Error " + err);
+  });
+
+  client.on("ready", function() {
+    return updateRedisProductsFromFile();
+  });
 
   productFilePath = 'products.json';
 
-  /*
-  # This would normally be maintained through some kind of admin interface, but we're faking, OK?
-  getProducts = () ->
-    fs.readFile productFilePath, (error,content) ->
-      if error
-        console.log error
-      else
-        products = JSON.parse content
-        for product in products
-          productkey = 'products:' + product.itemcode
-          client.hmset productkey, product
-  */
+  updateRedisProductsFromFile = function() {
+    return fs.readFile(productFilePath, function(error, content) {
+      var product, productkey, products, _i, _len, _results;
+      if (error) {
+        return console.log(error);
+      } else {
+        products = JSON.parse(content);
+        _results = [];
+        for (_i = 0, _len = products.length; _i < _len; _i++) {
+          product = products[_i];
+          productkey = 'products:' + product.itemcode;
+          _results.push(client.hmset(productkey, product));
+        }
+        return _results;
+      }
+    });
+  };
+
+  getProductsFromRedis = function(callback) {
+    var products;
+    products = [];
+    return client.keys('products*', function(err, keys) {
+      var i, _ref, _results;
+      _results = [];
+      for (i = 0, _ref = keys.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
+        _results.push(client.hgetall(keys[i], function(err, obj) {
+          products.push(obj);
+          if (products.length === keys.length) return callback(products);
+        }));
+      }
+      return _results;
+    });
+  };
 
   server = http.createServer(function(request, response) {
     var cartid, contentType, extension, filePath, uri;
@@ -71,18 +94,8 @@
           response.writeHead(200, {
             'Content-Type': 'application/json'
           });
-          /*
-                  products = []
-                  client.keys 'products*', (err,keys) ->
-                    for i in [0... keys.length]
-                      client.hgetall keys[i], (err,obj) ->
-                        products.push obj
-                        if i is keys.length
-                          console.log JSON.stringify products
-                          response.end JSON.stringify products
-          */
-          return fs.readFile('products.json', function(error, content) {
-            return response.end(content);
+          return getProductsFromRedis(function(products) {
+            return response.end(JSON.stringify(products));
           });
         } else {
           response.writeHead(404);

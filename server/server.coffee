@@ -9,23 +9,21 @@
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
-# redis = require 'redis'
+redis = require 'redis'
 url = require 'url'
 
-###
 client = redis.createClient()
 
 client.on "error", (err) ->
   console.log("Error "+ err)
 
 client.on "ready", () ->
-  getProducts()
-###
+  updateRedisProductsFromFile()
 
 productFilePath = 'products.json'
 
-### Products would normally be maintained through some kind of admin interface, but we're faking, OK?
-getProducts = () ->
+# Products would normally be maintained through some kind of admin interface, but we're faking, OK?
+updateRedisProductsFromFile = () ->
   fs.readFile productFilePath, (error,content) ->
     if error
       console.log error
@@ -34,7 +32,18 @@ getProducts = () ->
       for product in products
         productkey = 'products:' + product.itemcode
         client.hmset productkey, product
-###
+
+# TODO: Cannot find a nice way to get multiple hashes out of redis so far. Pipelining may be best option.
+#       http://stackoverflow.com/questions/4929202/most-efficient-way-to-get-several-hashes-in-redis
+# TODO: Handle errors - check for error on other async methods also :)
+getProductsFromRedis = (callback) ->
+  products = []
+  client.keys 'products*', (err,keys) ->
+    for i in [0...keys.length]
+      client.hgetall keys[i], (err,obj) ->
+        products.push obj
+        if products.length is keys.length
+          callback(products)
 
 server = http.createServer (request, response) ->
   console.log 'Request starting: ' + request.headers.cookie
@@ -61,23 +70,7 @@ server = http.createServer (request, response) ->
     else
       if filePath.indexOf './Products' is 0
         response.writeHead 200, {'Content-Type': 'application/json'}
-        # TODO: Cannot find a nice way to get multiple hashes out of redis so far. Pipelining may be best option.
-        #       http://stackoverflow.com/questions/4929202/most-efficient-way-to-get-several-hashes-in-redis
-        # TODO: For some reason, only the last object is returned below. Strange, because the console.log line
-        #       prints the entire and complete stringified array of objects
-        ###
-        products = []
-        client.keys 'products*', (err,keys) ->
-          for i in [0... keys.length]
-            client.hgetall keys[i], (err,obj) ->
-              products.push obj
-              if i is keys.length
-                console.log JSON.stringify products
-                response.end JSON.stringify products
-        ###
-        # Temporary redis simulator :)
-        fs.readFile 'products.json', (error,content) ->
-          response.end content
+        getProductsFromRedis (products) -> response.end JSON.stringify products
       else
         response.writeHead 404
         response.end()
